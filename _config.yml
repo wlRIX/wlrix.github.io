@@ -1,0 +1,34 @@
+# wlRIX -- the project site and wiki.
+#
+# Built by .github/workflows/pages.yml with the Jekyll in the Gemfile, not by
+# GitHub's classic Pages builder, so nothing here is limited to the safe-mode
+# plugin list. The repo's Pages source must be set to "GitHub Actions".
+
+title: wlRIX
+description: >-
+  A desktop environment for Wayland recreating the look and feel of IRIX --
+  the 4Dwm window manager, the Indigo Magic look, and the toolchest.
+url: "https://wlrix.github.io"
+baseurl: ""
+
+# The site is a wiki first and a news feed second; dated posts live under /news/.
+permalink: /news/:year/:month/:day/:title/
+
+sass:
+  style: compressed
+  sass_dir: _sass
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+feed:
+  path: /news/feed.xml
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - tools/
+  - vendor/

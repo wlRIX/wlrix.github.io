@@ -1,0 +1,52 @@
+{%- comment -%}
+  The toolchest, from _data/toolchest.yml.
+
+  The compositor gives com.wlrix.toolchest a titlebar and no border
+  (ShellFrame::TitlebarOnly), so the header here is a titlebar with no window
+  controls, and the menu sits directly under it.
+{%- endcomment -%}
+
+<nav class="toolchest window" aria-label="Toolchest">
+  <div class="titlebar">
+    <span class="titlebar__title">Toolchest</span>
+  </div>
+
+  <ul class="toolchest__menu">
+    {%- for group in site.data.toolchest %}
+      {%- assign flyout_id = 'toolchest-flyout-' | append: forloop.index -%}
+      <li class="toolchest__group">
+        <button type="button"
+                class="toolchest__top"
+                aria-expanded="false"
+                aria-controls="{{ flyout_id }}">
+          <span class="toolchest__label">{{ group.title }}</span>
+          <span class="toolchest__handle" aria-hidden="true"></span>
+        </button>
+
+        <ul class="toolchest__flyout" id="{{ flyout_id }}">
+          {%- for item in group.items %}
+            {%- if item.separator %}
+              <li class="toolchest__separator" role="separator"></li>
+            {%- else %}
+              {%- assign href = item.url | relative_url -%}
+              <li>
+                <a class="toolchest__link"
+                   href="{{ href }}"
+                   {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.title }}</a>
+              </li>
+            {%- endif %}
+          {%- endfor %}
+        </ul>
+      </li>
+    {%- endfor %}
+  </ul>
+
+  <div class="toolchest__footer">
+    {%- comment -%}
+      The label is written by scheme.js once it knows which scheme is showing;
+      until then it names neither, so a viewer with JS off is not told the
+      button does something it will not do.
+    {%- endcomment -%}
+    <button type="button" class="scheme-toggle" hidden>Scheme</button>
+  </div>
+</nav>

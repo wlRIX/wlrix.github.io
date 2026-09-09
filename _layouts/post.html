@@ -1,0 +1,8 @@
+---
+layout: default
+---
+<article class="prose">
+  <p class="news__date">{{ page.date | date: "%-d %B, %Y" }}</p>
+  {{ content }}
+  <p class="news__byline">{{ page.author | default: "the wlRIX project" }}</p>
+</article>

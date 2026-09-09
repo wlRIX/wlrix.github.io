@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<div class="prose">
+  {{ content }}
+</div>
+
+{%- comment -%}
+  Dated entries, newest first, in the style of an old lab-news page: the date
+  rules off each block and the byline closes it.
+{%- endcomment -%}
+{%- for post in site.posts %}
+  <div class="news">
+    <p class="news__date">{{ post.date | date: "%-d %B, %Y" }}</p>
+    <div class="news__body prose">
+      {%- if post.title %}
+        <p><strong>{{ post.title }}</strong>{% if post.summary %} &mdash; {{ post.summary }}{% endif %}</p>
+      {%- endif %}
+      {{ post.content }}
+      <p class="news__byline">{{ post.author | default: "the wlRIX project" }}</p>
+    </div>
+  </div>
+{%- else %}
+  <div class="prose"><p>No news yet.</p></div>
+{%- endfor %}

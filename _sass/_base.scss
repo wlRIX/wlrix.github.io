@@ -1,0 +1,98 @@
+// Page ground, typography defaults, and the shared metric variables.
+
+// wlrix-avalonia's WlrixTheme.axaml asks for exactly this stack. IRIX's own
+// FontPalette wanted Helvetica, which is proprietary; the fallbacks are the
+// project's own choice, not an invention here.
+$font-ui: Helvetica, Arial, "Liberation Sans", sans-serif;
+$font-mono: "DejaVu Sans Mono", "Liberation Mono", ui-monospace, "Courier New", monospace;
+
+// Metrics lifted from the compositor and the theme library, in logical pixels.
+$titlebar-height: 30px;   // decoration.rs TITLEBAR_HEIGHT
+$bevel: 2px;              // decoration.rs BEVEL, BevelThickness="2"
+$outline: 1px;            // decoration.rs OUTLINE
+$corner-inset: 16px;      // placement.rs CORNER_INSET
+$menu-min-width: 156px;   // menu.rs MIN_WIDTH, 4Dwm's menu width floor
+$menu-margin: 3px;        // menu.rs MARGIN
+$label-inset: 14px;       // menu.rs LABEL_INSET
+$title-px: 15px;          // compositor text.rs TITLE_PX
+$toolchest-width: 208px;
+$wide: 900px;             // below this the toolchest stops floating
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  // The scheme toggle writes data-scheme here; see assets/js/scheme.js.
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: $font-ui;
+  // The desktop runs its UI at 12px. Prose at 12px is not readable on the web,
+  // so the chrome keeps the real sizes and the body text does not.
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--wlrix-foreground);
+
+  // wlrix-bg tiles this rather than scaling it: a 100px dither stretched over a
+  // 4K screen turns to mush (data/background.toml.in). Same reasoning here --
+  // no background-size, and pixelated so a zoomed browser does not blur it.
+  //
+  // The URL is relative to this stylesheet (/assets/css/style.css), not to the
+  // page, so it resolves the same whatever baseurl the workflow builds with.
+  background-color: var(--wlrix-desktop);
+  background-image: url("../img/scatter.png");
+  background-repeat: repeat;
+  image-rendering: pixelated;
+}
+
+:root[data-scheme="gotham"] body {
+  background-image: url("../img/scatter-gotham.png");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme="classic"]) body {
+    background-image: url("../img/scatter-gotham.png");
+  }
+}
+
+::selection {
+  background: var(--wlrix-selection-background);
+  color: var(--wlrix-selection-foreground);
+}
+
+// Motif focus is a visible ring; keep one, in the scheme's own accent.
+:focus-visible {
+  outline: 2px solid var(--wlrix-select-fill);
+  outline-offset: 1px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 6px 10px;
+  background: var(--wlrix-face);
+  color: var(--wlrix-foreground);
+  font-weight: bold;
+
+  &:focus {
+    left: $corner-inset;
+    top: $corner-inset;
+  }
+}

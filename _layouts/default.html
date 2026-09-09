@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+  {%- include head.html -%}
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  {%- include toolchest.html -%}
+
+  <div class="page">
+    <main class="window" id="content">
+      <div class="titlebar">
+        <span class="titlebar__title">{{ page.title | default: site.title }}</span>
+        {%- comment -%}
+          The compositor's own frame art, decorative only: this is a page, not
+          a window, and there is nothing behind these to minimize or close.
+        {%- endcomment -%}
+        <span class="titlebar__buttons" aria-hidden="true">
+          <span class="titlebar__button titlebar__button--menu"></span>
+          <span class="titlebar__button titlebar__button--minimize"></span>
+          <span class="titlebar__button titlebar__button--maximize"></span>
+          <span class="titlebar__button titlebar__button--close"></span>
+        </span>
+      </div>
+
+      <div class="window__body">
+        {{ content }}
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ '/assets/js/scheme.js' | relative_url }}" defer></script>
+</body>
+</html>

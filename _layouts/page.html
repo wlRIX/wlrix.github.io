@@ -1,0 +1,9 @@
+---
+layout: default
+---
+<article class="prose">
+  {%- if page.stub %}
+    <p class="stub"><strong>This page is a stub.</strong> {{ page.stub }}</p>
+  {%- endif %}
+  {{ content }}
+</article>

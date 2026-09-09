@@ -1,0 +1,26 @@
+// Rouge highlighting, drawn from the palette's own highlight roles rather than
+// from a stock theme, so it changes with the scheme like everything else.
+//
+// The two schemes need different hues at the same roles -- Classic's comments
+// on #999999 and Gotham's on #3c3c3c cannot be the same gray -- so the tokens
+// get their own variables, set once per scheme in style.scss.
+
+.highlight {
+  color: var(--wlrix-foreground);
+
+  .c, .cm, .c1, .cs, .cd, .cp { color: var(--syntax-comment); font-style: italic; }
+  .k, .kc, .kd, .kn, .kp, .kr, .kt, .kv { color: var(--syntax-keyword); font-weight: bold; }
+  .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr, .ss { color: var(--syntax-string); }
+  .m, .mi, .mf, .mh, .mo, .mb, .il { color: var(--syntax-number); }
+  .nf, .nb, .nc, .nn { color: var(--syntax-name); }
+  .nt { color: var(--syntax-keyword); }
+  .na, .nv, .vc, .vg, .vi { color: var(--syntax-name); }
+  .o, .ow, .p { color: var(--wlrix-foreground); }
+  .err { color: var(--wlrix-error); font-weight: bold; }
+  .gd { color: var(--wlrix-error); }
+  .gi { color: var(--syntax-string); }
+  .ge { font-style: italic; }
+  .gs { font-weight: bold; }
+  // Shell prompts and generic output should not shout.
+  .gp, .go { color: var(--wlrix-disabled-foreground); }
+}

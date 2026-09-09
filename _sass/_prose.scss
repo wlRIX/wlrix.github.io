@@ -1,0 +1,212 @@
+// Body content inside the window panel.
+
+@use "bevel" as *;
+@use "base" as *;
+
+.prose {
+  max-width: 78ch;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    line-height: 1.25;
+    margin: 1.6em 0 0.6em;
+  }
+
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.35rem; }
+  h3 { font-size: 1.15rem; }
+  h4, h5, h6 { font-size: 1rem; }
+
+  // An etched rule under the top two levels, the way the section headings on
+  // an IRIX-era page were ruled off.
+  h2, h3 {
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--wlrix-panel-bottom-shadow);
+    box-shadow: 0 1px 0 0 var(--wlrix-panel-top-shadow);
+  }
+
+  p, ul, ol, dl, blockquote {
+    margin: 0 0 1em;
+  }
+
+  ul, ol {
+    padding-left: 1.6em;
+  }
+
+  li + li {
+    margin-top: 0.25em;
+  }
+
+  a {
+    color: var(--wlrix-link);
+
+    &:visited { color: var(--wlrix-link-visited); }
+    &:active  { color: var(--wlrix-link-active); }
+  }
+
+  strong { font-weight: bold; }
+
+  blockquote {
+    padding: 8px 14px;
+    border-left: 4px solid var(--wlrix-select-fill);
+    background: var(--wlrix-read-only);
+  }
+
+  hr {
+    @include bevel-etched;
+    --bevel-light: var(--wlrix-panel-top-shadow);
+    --bevel-dark: var(--wlrix-panel-bottom-shadow);
+    margin: 2em 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Inline code sits in a shallow sunken well; a block sits in a deeper one, the
+// way a Motif text field does.
+code, kbd, samp, pre {
+  font-family: $font-mono;
+  font-size: 0.9em;
+}
+
+.prose :not(pre) > code {
+  padding: 1px 4px;
+  background: var(--wlrix-list-background);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-sunken(1px);
+}
+
+.prose pre,
+.highlight {
+  margin: 0 0 1em;
+  padding: 10px 12px;
+  // shadowThickness.text is 4 in both schemes' metrics.
+  background: var(--wlrix-list-background);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-sunken(2px);
+  // Long lines scroll inside the well; the page body never scrolls sideways.
+  overflow-x: auto;
+
+  code {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+// jekyll's highlighter wraps <pre> in div.highlight; do not double the well.
+.highlight pre {
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  overflow-x: visible;
+}
+
+// Tables get the same well, with their own scroller so a wide one cannot push
+// the page sideways.
+//
+// Kramdown emits a bare <table> with nowhere to hang that scroller, so
+// scheme.js wraps each one at load. The wrapper is what scrolls, and the table
+// inside stays a real table filling it.
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 0 1em;
+  background: var(--wlrix-list-background);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-sunken(2px);
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  font-size: 0.95em;
+}
+
+// Without the script there is no wrapper, so the table scrolls itself. The
+// header row then only spans its own content rather than the full well, which
+// is why this is the fallback and not the first choice.
+.prose > table,
+.prose .news__body > table {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  overflow-x: auto;
+  margin: 0 0 1em;
+  background: var(--wlrix-list-background);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-sunken(2px);
+}
+
+.prose th,
+.prose td {
+  padding: 5px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--wlrix-face-bottom-shadow);
+}
+
+.prose th {
+  font-weight: bold;
+  background: var(--wlrix-face);
+  white-space: nowrap;
+}
+
+.prose tr:last-child td {
+  border-bottom: 0;
+}
+
+// A dated entry on the home page, after the reference lab-news layout: the
+// date sits above a ruled-off block of prose, with the byline at the foot.
+.news {
+  margin: 0 0 3em;
+}
+
+.news__date {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  font-style: italic;
+  border-bottom: 2px solid var(--wlrix-foreground);
+  padding-bottom: 3px;
+}
+
+.news__body {
+  padding: 12px 0 0 18px;
+}
+
+.news__byline {
+  margin-top: 12px;
+  text-align: right;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--wlrix-disabled-foreground);
+}
+
+// A page that is still a placeholder says so, rather than looking finished.
+.stub {
+  margin: 0 0 1.5em;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background: var(--wlrix-tooltip-background);
+  color: var(--wlrix-tooltip-foreground);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-raised(1px);
+}

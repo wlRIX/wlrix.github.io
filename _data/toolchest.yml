@@ -1,0 +1,86 @@
+# The toolchest's contents.
+#
+# The real toolchest builds its menus from a catalog rather than from a fixed
+# list, so the site's navigation is data here too: adding a page means adding a
+# line, not editing a template. Order is the order it appears in.
+#
+#   title:      the top-level label
+#   items:      the flyout, in order
+#   separator:  an etched rule between items, as the real menus use
+
+- title: Desktop
+  items:
+    - title: Home
+      url: /
+    - title: Overview
+      url: /overview/
+    - separator: true
+    - title: News
+      url: /news/
+
+- title: Install
+  items:
+    - title: Prerequisites
+      url: /install/prerequisites/
+    - title: Quick Start
+      url: /install/quick-start/
+    - title: From Source
+      url: /install/from-source/
+    - separator: true
+    - title: All Installation Pages
+      url: /install/
+
+- title: Configure
+  items:
+    - title: Color Schemes
+      url: /configure/schemes/
+    - title: Background
+      url: /configure/background/
+    - title: Keyboard
+      url: /configure/keyboard/
+    - title: Windows
+      url: /configure/windows/
+    - separator: true
+    - title: All Configuration Pages
+      url: /configure/
+
+- title: Components
+  items:
+    - title: Overview
+      url: /components/
+    - separator: true
+    - title: Compositor
+      url: /components/wlrix-compositor/
+    - title: Greeter
+      url: /components/wlrix-greeter/
+    - title: Session
+      url: /components/wlrix-session/
+    - title: Desktop Icons
+      url: /components/wlrix-desktop/
+    - title: Background
+      url: /components/wlrix-bg/
+    - title: Idle Manager
+      url: /components/wlrix-idle/
+    - title: Settings Daemon
+      url: /components/wlrix-settings-daemon/
+    - title: Portal Backend
+      url: /components/xdg-desktop-portal-wlrix/
+    - title: Screenshot
+      url: /components/wlrix-screenshot/
+    - title: Tray
+      url: /components/wlrix-tray/
+    - separator: true
+    - title: Avalonia Theme
+      url: /components/wlrix-avalonia/
+    - title: Applications
+      url: /components/wlrix-apps/
+    - title: Assets
+      url: /components/wlrix-assets/
+
+- title: Help
+  items:
+    - title: FAQ
+      url: /help/faq/
+    - separator: true
+    - title: About wlRIX
+      url: /help/about/

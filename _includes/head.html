@@ -1,0 +1,23 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{%- comment -%}
+  Applying the stored scheme before the stylesheet loads is what stops a
+  Classic flash on the way to a Gotham page. It has to be inline and it has to
+  be here, above the stylesheet link.
+{%- endcomment -%}
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem("wlrix-scheme");
+      if (s === "classic" || s === "gotham") {
+        document.documentElement.setAttribute("data-scheme", s);
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+{%- feed_meta -%}
+{%- seo -%}

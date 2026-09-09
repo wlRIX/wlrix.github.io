@@ -1,0 +1,68 @@
+---
+# Front matter is what makes Jekyll run this through Liquid before Sass, which
+# is how the palette data below becomes CSS custom properties.
+---
+
+@use "bevel";
+@use "base";
+@use "chrome";
+@use "toolchest";
+@use "prose";
+@use "syntax";
+
+{%- assign classic = site.data.schemes.classic -%}
+{%- assign gotham = site.data.schemes.gotham -%}
+
+// GENERATED IN PART. The --wlrix-* values below come from _data/schemes.yml,
+// which tools/sync-palette.py writes from the desktop's own resolved palette.
+// Change a color there and re-run the tool; do not edit hexes into this file.
+
+// Classic is the bare :root set because it is the desktop's default too
+// (wlrix-ui palette::DEFAULT = &CLASSIC).
+:root {
+{%- for role in classic %}
+  {%- unless role[0] == 'name' or role[0] == 'gamma' or role[0] == 'dark' %}
+  --wlrix-{{ role[0] }}: {{ role[1] }};
+  {%- endunless %}
+{%- endfor %}
+
+  --syntax-comment: #4a5d4a;
+  --syntax-keyword: #00007f;
+  --syntax-string: #6d2020;
+  --syntax-number: #4c167a;
+  --syntax-name: #23405e;
+}
+
+// A viewer whose system is dark and who has not chosen otherwise gets Gotham.
+// The :not() guard is what lets an explicit "classic" choice survive here.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme="classic"]) {
+{%- for role in gotham %}
+    {%- unless role[0] == 'name' or role[0] == 'gamma' or role[0] == 'dark' %}
+    --wlrix-{{ role[0] }}: {{ role[1] }};
+    {%- endunless %}
+{%- endfor %}
+
+    --syntax-comment: #9aa79a;
+    --syntax-keyword: #8ab4ff;
+    --syntax-string: #e2a0a0;
+    --syntax-number: #c7a3e8;
+    --syntax-name: #7fd0d0;
+  }
+}
+
+// And the same set again for an explicit choice, so the toggle wins in both
+// directions -- including choosing Gotham on a light system.
+:root[data-scheme="gotham"] {
+{%- for role in gotham %}
+  {%- unless role[0] == 'name' or role[0] == 'gamma' or role[0] == 'dark' %}
+  --wlrix-{{ role[0] }}: {{ role[1] }};
+  {%- endunless %}
+{%- endfor %}
+
+  --syntax-comment: #9aa79a;
+  --syntax-keyword: #8ab4ff;
+  --syntax-string: #e2a0a0;
+  --syntax-number: #c7a3e8;
+  --syntax-name: #7fd0d0;
+}

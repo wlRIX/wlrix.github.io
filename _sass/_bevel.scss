@@ -1,0 +1,69 @@
+// The Motif bevel, as wlRIX draws it.
+//
+// BevelBorder (wlrix-avalonia Controls/BevelBorder.cs, DrawBevel) does not draw
+// a border. It fills four rectangles, and they are deliberately not symmetric:
+//
+//   bottom  (x,       y+h-t, w,   t)  dark   -- full width
+//   right   (x+w-t,   y,     t,   h)  dark   -- full height
+//   top     (x,       y,     w-t, t)  light  -- inset by t on the right
+//   left    (x,       y,     t,   h-t) light -- inset by t at the bottom
+//
+// So only the top-left corner reads light; the other three read dark. That
+// asymmetry is the whole IRIX look -- a CSS `border` would mitre all four
+// corners at 45 degrees and read as a different widget entirely.
+//
+// Four inset box-shadows reproduce it. Painting order is first-listed on top,
+// so the dark pair is listed first and wins the three shared corners.
+//
+// Consumers set --bevel-light and --bevel-dark locally; the mixins never name
+// a color themselves, which is what lets one rule serve both schemes.
+
+@mixin bevel-raised($t: 2px) {
+  box-shadow:
+    inset 0 (-$t) 0 0 var(--bevel-dark),
+    inset (-$t) 0 0 0 var(--bevel-dark),
+    inset 0 $t 0 0 var(--bevel-light),
+    inset $t 0 0 0 var(--bevel-light);
+}
+
+// Sunken is Raised with the two brushes swapped (DrawBevel's `Sunken` arm).
+@mixin bevel-sunken($t: 2px) {
+  box-shadow:
+    inset 0 (-$t) 0 0 var(--bevel-light),
+    inset (-$t) 0 0 0 var(--bevel-light),
+    inset 0 $t 0 0 var(--bevel-dark),
+    inset $t 0 0 0 var(--bevel-dark);
+}
+
+// The 1px hard outline a menu panel carries outside its bevel. Drawn as a
+// spread shadow rather than a border so it does not enter the box model and
+// shift what it wraps.
+@mixin outer-line($t: 1px) {
+  outline: $t solid var(--wlrix-outer-line);
+  outline-offset: 0;
+}
+
+// The etched separator: 1px dark over 1px light, 2px tall in total.
+// Separator.axaml gives it Height="2" Margin="4,3".
+@mixin bevel-etched {
+  height: 2px;
+  border: 0;
+  padding: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bevel-dark) 0,
+    var(--bevel-dark) 1px,
+    var(--bevel-light) 1px,
+    var(--bevel-light) 2px
+  );
+}
+
+// A raised bevel that reserves its thickness while invisible, so an item does
+// not resize when it arms. The toolchest's top-level items work this way:
+// BevelBorder with Background/Light/Dark all Transparent at rest.
+@mixin bevel-latent($t: 2px) {
+  --bevel-light: transparent;
+  --bevel-dark: transparent;
+  background: transparent;
+  @include bevel-raised($t);
+}

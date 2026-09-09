@@ -1,0 +1,213 @@
+// The toolchest: a floating vertical menu, top-left, with flyout submenus.
+//
+// Mirrors wlrix-avalonia Controls/ToolchestMenu.axaml and Controls/Menu.axaml.
+// The real thing has no header of its own -- the compositor's server-side
+// titlebar supplies the "Toolchest" bar -- so the bar here is the window frame,
+// drawn the same way as any other titlebar (see _chrome.scss).
+
+@use "bevel" as *;
+@use "base" as *;
+
+.toolchest {
+  position: fixed;
+  // placement.rs pins it Corner(TopLeft) with CORNER_INSET.
+  top: $corner-inset;
+  left: $corner-inset;
+  z-index: 20;
+  width: $toolchest-width;
+  font-size: 13px;
+}
+
+.toolchest__menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--wlrix-panel);
+}
+
+.toolchest__group {
+  position: relative;
+}
+
+// Top-level items. Bold italic, per the ControlTheme's FontStyle/FontWeight,
+// with Padding="8,3".
+.toolchest__top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 3px 8px;
+  border: 0;
+  font: inherit;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  color: var(--wlrix-foreground);
+  cursor: pointer;
+
+  // The bevel is always 2px, transparent at rest, so arming does not resize
+  // the item by a pixel.
+  @include bevel-latent($bevel);
+}
+
+// Armed: the raised bevel lights up. That is the entire hover state -- no fill
+// change behind the text, no color change on the text. Getting this wrong is
+// what makes a Motif menu look like a web menu.
+.toolchest__top:hover,
+.toolchest__top:focus-visible,
+.toolchest__group.is-open > .toolchest__top {
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  background: var(--wlrix-face);
+}
+
+.toolchest__label {
+  flex: 1 1 auto;
+}
+
+// The "drawer handle" glyph: an 11x11 raised bevel docked right, always
+// visible. It is what says the item flies out.
+.toolchest__handle {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  margin-left: 16px;
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  background: var(--wlrix-face);
+  @include bevel-raised($bevel);
+}
+
+// The flyout. Menu.axaml: OuterLineThickness="1" over a raised
+// BevelThickness="2" over Padding="2", and no drop shadow
+// (WindowManagerAddShadowHint="False") -- a Motif menu is flat against the
+// screen, it does not hover above it.
+.toolchest__flyout {
+  position: absolute;
+  left: 100%;
+  top: 0; // Placement="RightEdgeAlignedTop"
+  z-index: 30;
+  min-width: $menu-min-width;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  background: var(--wlrix-face);
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-raised($bevel);
+  @include outer-line($outline);
+}
+
+.toolchest__link {
+  display: block;
+  padding: 3px 4px 3px $label-inset;
+  font-size: 13px;
+  font-weight: normal;
+  font-style: normal;
+  color: var(--wlrix-foreground);
+  text-decoration: none;
+  white-space: nowrap;
+  @include bevel-latent($bevel);
+
+  &:visited {
+    color: var(--wlrix-foreground);
+  }
+
+  &:hover,
+  &:focus-visible {
+    --bevel-light: var(--wlrix-face-top-shadow);
+    --bevel-dark: var(--wlrix-face-bottom-shadow);
+    background: var(--wlrix-face);
+  }
+}
+
+// The page you are on. Marked with the scheme's select fill down the left edge
+// rather than by recoloring the text, which would read as a disabled item.
+.toolchest__link[aria-current="page"] {
+  font-weight: bold;
+  border-left: 4px solid var(--wlrix-select-fill);
+  padding-left: $label-inset - 4px;
+}
+
+.toolchest__separator {
+  @include bevel-etched;
+  margin: 3px 4px;
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+}
+
+// The scheme switcher, in the toolchest's own panel below the menu.
+.toolchest__footer {
+  padding: 6px;
+  background: var(--wlrix-panel);
+}
+
+.scheme-toggle {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  border: 0;
+  font: inherit;
+  font-size: 12px;
+  color: var(--wlrix-foreground);
+  background: var(--wlrix-face);
+  cursor: pointer;
+  --bevel-light: var(--wlrix-face-top-shadow);
+  --bevel-dark: var(--wlrix-face-bottom-shadow);
+  @include bevel-raised($bevel);
+
+  // Pressed: the bevel goes sunken and the face darkens to `armed`, which is
+  // what a Motif button does under the pointer.
+  &:active {
+    background: var(--wlrix-armed);
+    @include bevel-sunken($bevel);
+  }
+}
+
+// Pointer devices get the real behavior: the flyout opens on hover, and on
+// keyboard focus anywhere inside the group. Touch and coarse pointers do not
+// have a hover state to open with, so they fall through to the .is-open class
+// the script toggles on tap.
+.toolchest__flyout {
+  display: none;
+}
+
+.toolchest__group.is-open > .toolchest__flyout {
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .toolchest__group:hover > .toolchest__flyout,
+  .toolchest__group:focus-within > .toolchest__flyout {
+    display: block;
+  }
+}
+
+// Narrow screens: the toolchest stops floating and becomes a normal block at
+// the top of the page, with the flyouts inline underneath their item rather
+// than off to the right, where there is no room for them.
+@media (max-width: $wide) {
+  .toolchest {
+    position: static;
+    width: auto;
+    margin: 0 0 $corner-inset;
+  }
+
+  .toolchest__flyout {
+    position: static;
+    min-width: 0;
+    margin: 0 0 2px;
+    outline: 0;
+  }
+
+  // Hover must not open anything here: with the flyouts in the flow, opening
+  // one on hover would shove the rest of the page around under the finger.
+  .toolchest__group:hover > .toolchest__flyout,
+  .toolchest__group:focus-within > .toolchest__flyout {
+    display: none;
+  }
+
+  .toolchest__group.is-open > .toolchest__flyout {
+    display: block;
+  }
+}
