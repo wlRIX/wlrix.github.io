@@ -6,7 +6,17 @@ permalink: /install/quick-start/
 
 # Quick Start
 
-For a machine that already has the [prerequisites]({{ '/install/prerequisites/' | relative_url }}).
+For a machine that already has the [prerequisites]({{ '/install/prerequisites/' | relative_url }}). On
+Arch, the build dependencies, the required runtime and the recommended extras come to:
+
+```sh
+sudo pacman -S --needed just rust clang gcc pkgconf dotnet-sdk git python \
+    wayland libinput seatd mesa libdrm libxkbcommon pipewire gtk3 \
+    greetd polkit xdg-desktop-portal udisks2 xorg-xwayland gnome-keyring
+```
+
+Add NetworkManager, UPower, power-profiles-daemon and BlueZ on a laptop, and see the
+[runtime tables]({{ '/install/prerequisites/#runtime' | relative_url }}) for the rest.
 
 ```sh
 git clone https://github.com/wlrix/wlrix-epoch

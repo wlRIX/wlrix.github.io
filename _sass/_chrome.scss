@@ -1,7 +1,8 @@
 // The 4Dwm window frame: outer line, raised bevel, titlebar, panel body.
 //
 // decoration.rs gives the numbers -- TITLEBAR_HEIGHT 30, BEVEL 2, OUTLINE 1,
-// TITLE_PX 15 in Face::Bold, TitleAlign::Centered.
+// TITLE_PX 15 in Face::Bold. Ordinary windows are TitleAlign::Left; only the
+// toolchest is TitleAlign::Centered.
 
 @use "bevel" as *;
 @use "base" as *;
@@ -23,7 +24,6 @@
   display: flex;
   align-items: center;
   height: $titlebar-height;
-  padding: 0 6px;
   font-size: $title-px;
   font-weight: bold;
   color: var(--wlrix-title-active-text);
@@ -36,16 +36,12 @@
 }
 
 .titlebar__title {
-  // TitleAlign::Centered centers the title in the whole bar, not in the space
-  // the buttons leave, so it is absolutely placed rather than flexed.
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  pointer-events: none;
-  // Enough room on both sides for the four buttons, so a long title is
-  // ellipsized rather than run underneath them.
-  padding: 0 ($titlebar-height * 4);
+  // TitleAlign::Left: the title starts 6px past the menu button and runs to
+  // 6px short of minimize (title_text_area's pad), ellipsized in between.
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 6px;
+  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -53,9 +49,9 @@
 
 // The window controls. These are the compositor's own generated frame art,
 // copied out of wlrix-assets/themes/wlRIX/assets/<scheme>/. They are
-// decoration: the page is not a window and there is nothing to close.
+// decoration: the page is not a window and there is nothing to minimize.
+// right_buttons() puts maximize outermost with minimize beside it.
 .titlebar__buttons {
-  margin-left: auto;
   display: flex;
   gap: 0;
   flex: 0 0 auto;
@@ -67,31 +63,17 @@
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: pixelated;
+  flex: 0 0 auto;
 }
 
 // The toolchest's own titlebar carries no buttons, matching the compositor's
-// ShellFrame::TitlebarOnly for com.wlrix.toolchest.
-.toolchest .titlebar {
-  padding: 0;
-}
-
+// ShellFrame::TitlebarOnly for com.wlrix.toolchest, and with nothing to line
+// up beside, its title is TitleAlign::Centered.
 .toolchest .titlebar__title {
-  padding: 0 6px;
+  text-align: center;
 }
 
-// A narrow window has no room for 120px of button on the right and a legible
-// title in what is left. The buttons are decoration, so they go first.
-@media (max-width: $wide) {
-  .titlebar__buttons {
-    display: none;
-  }
-
-  .titlebar__title {
-    padding: 0 8px;
-  }
-}
-
-@each $name in (menu, minimize, maximize, close) {
+@each $name in (menu, minimize, maximize) {
   .titlebar__button--#{$name} {
     background-image: url("../img/titlebar/classic/#{$name}.svg");
   }

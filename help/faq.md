@@ -26,9 +26,32 @@ keeps running. `PREFIX` defaults to `/usr` to match what each component's justfi
 
 ## Do I need the .NET SDK?
 
-Only for the C# half — the Avalonia theme and the applications, including the toolchest and the settings
-panels. `just build-rust` and `just install-rust` work on their own, and give you a working compositor,
+Only for the C# half — the Avalonia theme and the applications, including the toolchest, the file
+manager and the settings panels. `just build-rust` and `just install-rust` work on their own, and give you a working compositor,
 greeter and session without it.
+
+## The file manager does not show my USB stick.
+
+Install and start **udisks2**. Without it the file manager falls back to reading what is already
+mounted, so it cannot see a disk that has been plugged in and not yet mounted, and it has no way to mount
+one. Phones in file-transfer mode are a separate path, through libmtp.
+
+## An application will not open, or opens with no window.
+
+If it is an X11 application, the usual reason is that **Xwayland** is not installed (`xorg-xwayland` on
+Arch). The compositor starts it with the session, and a session without it still starts, so the first
+sign is an X11 program that silently fails.
+
+## My saved passwords and SSH keys are not unlocked at login.
+
+Install **GNOME Keyring**. `start-wlrix` starts it when it is present and exports `SSH_AUTH_SOCK` if its
+socket turns up. For the keyring to unlock with your login password, add `pam_gnome_keyring` to the
+`wlrix-greeter` PAM service, which is the one that authenticates whoever is logging in.
+
+## Notifications sometimes look wrong, or come from mako or dunst.
+
+`wlrix-osd` is the notification server, and only one can be installed. With mako or dunst still there,
+anything sent outside a wlRIX session can D-Bus-activate the other one. Uninstall it.
 
 ## Why does dragging a window show a wireframe?
 

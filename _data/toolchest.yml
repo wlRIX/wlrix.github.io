@@ -61,6 +61,8 @@
       url: /components/wlrix-bg/
     - title: Idle Manager
       url: /components/wlrix-idle/
+    - title: Screen Locker
+      url: /components/wlrix-lock/
     - title: Settings Daemon
       url: /components/wlrix-settings-daemon/
     - title: Portal Backend
@@ -69,6 +71,23 @@
       url: /components/wlrix-screenshot/
     - title: Tray
       url: /components/wlrix-tray/
+    - title: Clipboard History
+      url: /components/wlrix-clipboard/
+    - title: System Sounds
+      url: /components/wlrix-sound/
+    - title: Notifications
+      url: /components/wlrix-osd/
+    - title: Network
+      url: /components/wlrix-network/
+    - title: Power
+      url: /components/wlrix-power/
+    - title: Bluetooth
+      url: /components/wlrix-bluetooth/
+    - separator: true
+    - title: GTK Module
+      url: /components/wlrix-gtk-config/
+    - title: Shared Drawing
+      url: /components/wlrix-ui/
     - separator: true
     - title: Avalonia Theme
       url: /components/wlrix-avalonia/
@@ -76,6 +95,8 @@
       url: /components/wlrix-apps/
     - title: Assets
       url: /components/wlrix-assets/
+    - title: Sound Theme
+      url: /components/wlrix-sounds/
 
 - title: Help
   items:

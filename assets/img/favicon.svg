@@ -1,6 +1,6 @@
 <!-- The toolchest itself, at favicon size: the gold 4Dwm titlebar over a
      paneled body with three menu items. Colors are Classic's title-active,
-     panel and face roles. There is no wlRIX logo to use instead -- the
+     panel and face roles. There is no wlRIX logo to use instead; the
      project's own mark is the typographic "wlRIX" wordmark, which does not
      survive being drawn at 16 pixels. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">

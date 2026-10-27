@@ -10,17 +10,19 @@
 
   <div class="page">
     <main class="window" id="content">
+      {%- comment -%}
+        The compositor's own frame art, decorative only: this is a page, not a
+        window, and there is nothing behind these to open a menu or minimize.
+        Laid out as decoration.rs does: the window menu flush left, the title
+        just past it, then minimize and maximize flush right. 4Dwm has no close
+        button; closing is on the window menu.
+      {%- endcomment -%}
       <div class="titlebar">
+        <span class="titlebar__button titlebar__button--menu" aria-hidden="true"></span>
         <span class="titlebar__title">{{ page.title | default: site.title }}</span>
-        {%- comment -%}
-          The compositor's own frame art, decorative only: this is a page, not
-          a window, and there is nothing behind these to minimize or close.
-        {%- endcomment -%}
         <span class="titlebar__buttons" aria-hidden="true">
-          <span class="titlebar__button titlebar__button--menu"></span>
           <span class="titlebar__button titlebar__button--minimize"></span>
           <span class="titlebar__button titlebar__button--maximize"></span>
-          <span class="titlebar__button titlebar__button--close"></span>
         </span>
       </div>
 

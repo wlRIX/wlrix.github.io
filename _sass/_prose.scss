@@ -81,6 +81,9 @@ code, kbd, samp, pre {
 }
 
 .prose :not(pre) > code {
+  // A D-Bus interface or a brace-expanded path is one unbroken word, wider
+  // than a phone. Break it where it would overflow, and nowhere else.
+  overflow-wrap: anywhere;
   padding: 1px 4px;
   background: var(--wlrix-list-background);
   --bevel-light: var(--wlrix-face-top-shadow);

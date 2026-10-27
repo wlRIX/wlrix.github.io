@@ -10,8 +10,10 @@ wlRIX is a desktop environment for Wayland that recreates the look and feel of *
 and specifically its 4Dwm window manager and Indigo Magic Desktop.
 
 It is not a theme over an existing desktop. The compositor, the greeter, the session manager, the
-desktop icons, the background painter, the idle manager, the tray, the screenshot tool, the portal
-backend and the applications are all wlRIX's own, written to behave the way the originals did.
+desktop icons, the background painter, the idle manager and screen locker, the tray and its network,
+power and Bluetooth indicators, the notifications, the system sounds, the clipboard history, the
+screenshot tool, the portal backend and the applications are all wlRIX's own, written to behave the way
+the originals did.
 
 ## What that means in practice
 
@@ -49,4 +51,5 @@ There are no distribution packages yet. See [Installation]({{ '/install/' | rela
 
 The desktop is GPL-3.0-or-later. [`wlrix-assets`]({{ '/components/wlrix-assets/' | relative_url }}) — the
 palette, icons, cursors and wallpapers — is MIT, so the look-and-feel data is freely reusable outside the
-project.
+project. [`wlrix-sounds`]({{ '/components/wlrix-sounds/' | relative_url }}) is the exception to both: the
+IRIX sounds were never released under a license, and carry only the credit their author asked for.
