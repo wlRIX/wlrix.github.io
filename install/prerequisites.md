@@ -65,6 +65,8 @@ see a stick that has been plugged in and not yet mounted, and it has no way to m
 |---|---|
 | Xwayland (`xorg-xwayland`) | X11 applications. The compositor starts it with the session; without it the session still starts, with a warning, but anything that only speaks X11 will not run |
 | GNOME Keyring (`gnome-keyring`) | a secrets store and SSH agent. `start-wlrix` starts it when present, and adding `pam_gnome_keyring` to the `wlrix-greeter` PAM stack unlocks it with your login password |
+| AppStream catalog (`archlinux-appstream-data`) | product names, icons, and categories in the Software Manager's Software Inventory. Without it the rows show package names only. On Debian the catalog comes with `appstream`, on openSUSE with `libzypp-plugin-appdata` |
+| `djxl` (`libjxl`) | converts the Arch catalog's JPEG-XL icons for the Software Manager. Without it, the only icons shown are those in your icon themes, so most packages not yet installed have none |
 
 ### For the hardware you have
 
